@@ -15,5 +15,5 @@ module.exports = (sequelize, DataTypes) => {
         }
     });
 
-    return Dorms
-}
+    return Dorms;
+};
