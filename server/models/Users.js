@@ -33,10 +33,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        programe: {
-            type: DataTypes.STRING,
-            allowNull: true,
-        },
         degree: {
             type: DataTypes.STRING,
             allowNull: true,
@@ -45,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: true,
         },
-        
+
     });
 
     return Users;

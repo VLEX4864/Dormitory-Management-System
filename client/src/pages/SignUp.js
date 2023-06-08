@@ -1,131 +1,164 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-// import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Formik, Form } from "formik";
+import { Button, Box } from '@mui/material';
+import * as Yup from 'yup';
+import FormikField from "../components/FormikField";
+import FormikSelect from "../components/FormikSelect";
+import axios from "axios";
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
-
-const theme = createTheme();
-
-export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+function SignUp() {
+  const initialValues = {
+    username: "",
+    password: "",
+    role: "user",
+    firstname: "",
+    lastname: "",
+    email: "",
+    cnp: "",
+    faculty: "",
+    degree: "",
+    year: "",
   };
 
+  const validationSchema = Yup.object().shape({
+    username: Yup.string().min(3).max(15).required(),
+    password: Yup.string().min(5).max(20).required(),
+    firstname: Yup.string().max(30).required(),
+    lastname: Yup.string().max(30).required(),
+    email: Yup.string().email(),
+    cnp: Yup.string()
+      .required()
+      .matches(/^[0-9]{13}$/, 'Must contain 13 digits'),
+    faculty: Yup.string().min(3).max(6).required(),
+    degree: Yup.string().min(3).max(3).required(),
+    year: Yup.string()
+      .required()
+      .matches(/^[0-3]{1}$/, 'Can only be 1, 2 or 3'),
+  })
+
+  const onSubmit = (data) => {
+    axios.post("http://localhost:3001/auth", data).then((response) => {
+      console.log(data);
+    });
+  }
+
+  const facultyItems = [
+    {
+      label: "FAD",
+      value: "FAD"
+    },
+    {
+      label: "FCBG",
+      value: "FCBG"
+    },
+    {
+      label: "Drept",
+      value: "Drept"
+    },
+    {
+      label: "FEAA",
+      value: "FEAA"
+    },
+    {
+      label: "FEFS",
+      value: "FEFS"
+    },
+    {
+      label: "Fizica",
+      value: "Fizica"
+    },
+    {
+      label: "LIT",
+      value: "LIT"
+    },
+    {
+      label: "FMI",
+      value: "FMI"
+    },
+    {
+      label: "FMT",
+      value: "FMT"
+    },
+    {
+      label: "FSP",
+      value: "FSP"
+    },
+    {
+      label: "FSPFSC",
+      value: "FSPFSC"
+    }
+  ]
+
+  const degreeItems = [
+    {
+      label: "BSc",
+      value: "BSc"
+    },
+    {
+      label: "MSc",
+      value: "MCs"
+    },
+    {
+      label: "PhD",
+      value: "Phd"
+    }
+  ]
+
+  const yearItems = [
+    {
+      label: "1",
+      value: "1"
+    },
+    {
+      label: "2",
+      value: "2"
+    },
+    {
+      label: "3",
+      value: "3"
+    }
+  ]
+
+
+
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            {/* <LockOutlinedIcon /> */}
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="#" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
+    <>
+      <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+        <Form>
+          <Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikField name="firstname" label="First name" ></FormikField>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikField name="lastname" label="Last name" ></FormikField>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikField name="email" label="Email" ></FormikField>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikField name="username" label="Username" ></FormikField>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikField name="password" label="Password" type="password"></FormikField>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikField name="cnp" label="CNP" ></FormikField>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikSelect name="faculty" items={facultyItems} label="Faculty"></FormikSelect>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikSelect name="degree" items={degreeItems} label="Degree"></FormikSelect>
+            </Box>
+            <Box sx={{ p: '15px' }}>
+              <FormikSelect name="year" items={yearItems} label="Year"></FormikSelect>
+            </Box>
+            <Button type='submit' variant="contained">Sign Up</Button>
           </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-    </ThemeProvider>
-  );
+        </Form >
+      </Formik >
+    </>
+  )
 }
+
+
+export default SignUp
