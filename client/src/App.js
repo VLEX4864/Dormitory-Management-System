@@ -1,13 +1,15 @@
 import './App.css';
-import { BrowserRouter as Router, Link as RouterLink, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import CreateDorm from './pages/CreateDorm';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import HomePage from './pages/HomePage'
 import Tries from './components/Tries'
-import { Box, Link } from '@mui/material';
 import ResponsiveAppBar from './components/NavBar';
+import Students from './pages/Students';
+import Footer from './components/Footer';
+import Dorm from './pages/Dorm';
 
 
 
@@ -24,25 +26,8 @@ import ResponsiveAppBar from './components/NavBar';
 function App() {
   return <div className='App'>
 
-    <ResponsiveAppBar></ResponsiveAppBar>
     <Router>
-      <Box sx={{ margin: '20px' }}>
-        <Link variant="h6" underline="none" component={RouterLink} to="/createDorm">
-          Create a dormitory
-        </Link>
-        <Link variant="h6" underline="none" component={RouterLink} to="/">
-          Home
-        </Link>
-        <Link variant="h6" underline="none" component={RouterLink} to="/signUp">
-          SignUp
-        </Link>
-        <Link variant="h6" underline="none" component={RouterLink} to="/logIn">
-          LogIn
-        </Link>
-        <Link variant="h6" underline="none" component={RouterLink} to="/HomePage">
-          HomePage
-        </Link>
-      </Box>
+      <ResponsiveAppBar />
 
       <Routes>
         <Route path="/createDorm" element={<CreateDorm />} />
@@ -51,7 +36,11 @@ function App() {
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/Tries" element={<Tries />} />
+        <Route path="/Students" element={<Students />} />
+        <Route path="/dorm/:id" element={<Dorm />} />
       </Routes>
+
+      <Footer />
     </Router>
   </div>;
 }

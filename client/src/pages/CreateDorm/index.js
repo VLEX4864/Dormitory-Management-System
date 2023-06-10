@@ -4,6 +4,7 @@ import { Button, Box } from '@mui/material';
 import * as Yup from 'yup';
 import axios from 'axios';
 import FormikField from '../../components/FormikField';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -22,15 +23,15 @@ function CreateDorm() {
 
     const onSubmit = (data) => {
         axios.post("http://localhost:3001/dorms", data).then((response) => {
-            console.log('It worked!')
+            navigate("/");
         });
     }
 
 
-
+    let navigate = useNavigate();
 
     return (
-        <>
+        <Box mt={8}>
             <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
                 <Form>
                     <Box>
@@ -48,7 +49,7 @@ function CreateDorm() {
                 </Form >
             </Formik >
 
-        </>
+        </Box>
     )
 }
 

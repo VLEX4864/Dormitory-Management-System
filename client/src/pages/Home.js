@@ -3,11 +3,16 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Box } from '@mui/material';
 import ActionAreaCard from '../components/Card';
+import { useNavigate } from "react-router-dom";
+
+
 
 function Home() {
 
 
     const [listOfDorms, setListOfDorms] = useState([]);
+    let navigate = useNavigate();
+
 
     useEffect(() => {
         axios.get("http://localhost:3001/dorms").then((response) => {
@@ -16,19 +21,12 @@ function Home() {
     }, []);
 
     return (
-        <Box>
-            <ActionAreaCard></ActionAreaCard>
-            <div>
-                {listOfDorms.map((value) => {
-                    return (
-                        <div className='dorm' key={value.id}>
-                            <div className='name'> {value.name} </div>
-                            <div className='admin'> {value.administrator} </div>
-                            <div className='adress'> {value.adress} </div>
-                        </div>
-                    );
-                })}
-            </div>
+        <Box mt={13} display="flex" justifyContent="center" flexWrap="wrap">
+            {listOfDorms.map((dorm) => (
+                <Box key={dorm.id} flex="0 0 auto" minWidth="300px" maxWidth="400px" margin="10px" onClick={() => navigate(`/dorm/${dorm.id}`)}>
+                    <ActionAreaCard data={dorm} />
+                </Box>
+            ))}
         </Box>
 
     )

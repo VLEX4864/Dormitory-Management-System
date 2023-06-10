@@ -7,6 +7,13 @@ router.get("/", async (req, res) => {
     res.json(listOfDorms);
 });
 
+router.get("/byId/:id", async (req, res) => {
+    const id = req.params.id;
+    const dorm = await Dorms.findByPk(id);
+    res.json(dorm);
+})
+
+
 router.post("/", async (req, res) => {
     const dorm = req.body;
     await Dorms.create(dorm);

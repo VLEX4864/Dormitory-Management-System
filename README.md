@@ -32,7 +32,7 @@ After cloning the repository on your local machine, you need to follow the next 
   npm start
 ```
 
-5. All the dependencies are specified in the package.json files for both the clint and the served side.
+5. All the dependencies are specified in the package.json files for both the client and the served side.
 ## Usage/Examples
 This piece of code is where the application starts by fetching the data from the database and displaying it in the browser.
 

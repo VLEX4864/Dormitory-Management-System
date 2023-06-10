@@ -5,9 +5,14 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { CardActionArea } from '@mui/material';
 
-export default function ActionAreaCard() {
+export default function ActionAreaCard({ data }) {
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345, m: 1 }}>
             <CardActionArea>
                 <CardMedia
                     component="img"
@@ -17,11 +22,10 @@ export default function ActionAreaCard() {
                 />
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
-                        Dormitory C13
+                        {data.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                        This dormitory is situated 5 minutes away from the city center. It provides various facilities like common
-                        kitchen, bathrooms and the rooms have their own sink.
+                        {data.adress}
                     </Typography>
                 </CardContent>
             </CardActionArea>

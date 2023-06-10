@@ -8,13 +8,16 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 import HomeIcon from '@mui/icons-material/Home';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
-const pages = ['Configure Dorm', 'Edit Dorm'];
+
+
+
+const pages = [{ link: "/createDorm", title: "Create a dormitory" }, { link: "/", title: "Home" }, { link: "/signUp", title: "SignUp" }, { link: "/logIn", title: "LogIn" }, { link: "/HomePage", title: "HomePage" }];
 const settings = ['Profile', 'Account', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -37,7 +40,7 @@ function ResponsiveAppBar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="fixed">
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <HomeIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -88,10 +91,15 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
+                            {pages.map((page, index) => (
+                                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                    <Link variant="h7" underline="none" component={RouterLink} to={page.link}>
+                                        <Typography sx={{ color: "black" }}>
+                                            {page.title}
+                                        </Typography>
+                                    </Link>
                                 </MenuItem>
+
                             ))}
                         </Menu>
                     </Box>
@@ -111,17 +119,17 @@ function ResponsiveAppBar() {
                             textDecoration: 'none',
                         }}
                     >
-                        Dormitory Management System
+                        DMS
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
-                            >
-                                {page}
-                            </Button>
+                        {pages.map((page, index) => (
+                            <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                <Link variant="h7" underline="none" component={RouterLink} to={page.link}>
+                                    <Typography sx={{ color: "white" }}>
+                                        {page.title}
+                                    </Typography>
+                                </Link>
+                            </MenuItem>
                         ))}
                     </Box>
 
