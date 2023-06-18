@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Box } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import ActionAreaCard from '../components/Card';
 import { useNavigate } from "react-router-dom";
 
@@ -21,13 +21,39 @@ function Home() {
     }, []);
 
     return (
-        <Box mt={13} display="flex" justifyContent="center" flexWrap="wrap">
-            {listOfDorms.map((dorm) => (
-                <Box key={dorm.id} flex="0 0 auto" minWidth="300px" maxWidth="400px" margin="10px" onClick={() => navigate(`/dorm/${dorm.id}`)}>
-                    <ActionAreaCard data={dorm} />
-                </Box>
-            ))}
-        </Box>
+        <Container>
+            <Box
+                sx={{
+                    bgcolor: 'background.paper',
+                    pt: 8,
+                    pb: 6,
+                }}
+            >
+                <Container maxWidth="sm">
+                    <Typography
+                        component="h1"
+                        variant="h2"
+                        align="center"
+                        color="text.primary"
+                        gutterBottom
+                    >
+                        Student Residences
+                    </Typography>
+                    <Typography variant="h5" align="center" color="text.secondary" paragraph>
+                        If you are in search for a great student accomodation, you have arrived at the perfect place! Choose
+                        the dorm you like, see details about it and write your feedback
+                    </Typography>
+                </Container>
+            </Box>
+            <Box mt={13} display="flex" justifyContent="center" flexWrap="wrap">
+                {listOfDorms.map((dorm) => (
+                    <Box key={dorm.id} flex="0 0 auto" minWidth="300px" maxWidth="400px" margin="10px" onClick={() => navigate(`/dorm/${dorm.id}`)}>
+                        <ActionAreaCard data={dorm} />
+                    </Box>
+                ))}
+            </Box>
+        </Container>
+
 
     )
 }

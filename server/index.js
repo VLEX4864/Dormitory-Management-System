@@ -12,6 +12,8 @@ const dormRouter = require('./routes/Dorms');
 app.use("/dorms", dormRouter);
 const usersRouter = require('./routes/Users');
 app.use("/auth", usersRouter);
+const commentsRouter = require('./routes/Comments');
+app.use("/comments", commentsRouter);
 
 
 db.sequelize.sync().then(() => {

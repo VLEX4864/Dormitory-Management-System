@@ -34,6 +34,15 @@ const ImageContainer = styled(Box)({
     marginBottom: 4
 });
 
+const CommentBox = styled(Box)({
+    border: '1px solid gray',
+    borderRadius: '5px',
+    width: '60%',
+    maxWidth: 300,
+    margin: 10,
+    padding: 10
+})
+
 
 
 
@@ -41,12 +50,40 @@ function Dorm() {
 
     let { id } = useParams();
     const [dormObject, setDormObject] = useState({});
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
 
     useEffect(() => {
         axios.get(`http://localhost:3001/dorms/byId/${id}`).then((response) => {
             setDormObject(response.data);
         });
-    });
+
+        axios.get(`http://localhost:3001/comments/${id}`).then((response) => {
+            setComments(response.data);
+        });
+    }, [id]);
+
+    const addComment = () => {
+        axios.post("http://localhost:3001/comments", {
+            comment: newComment, DormId: id
+        },
+            {
+                headers: {
+                    accessToken: localStorage.getItem("accessToken"),
+                },
+            }
+        )
+            .then((response) => {
+                if (response.data.error) {
+                    console.log(response.data.error);
+                } else {
+                    const comm = { comment: newComment, user: response.data.user };
+                    setComments([...comments, comm]);
+                    setNewComment("");
+                }
+
+            });
+    }
 
     return (
         <Grid container spacing={2} mt={10}>
@@ -78,9 +115,10 @@ function Dorm() {
                         Comment Section
                     </Typography>
                     <Box width="80%" mt={2}>
-                        <Box mb={2}>
+                        <Box mb={2} ml={1} display={'flex'}>
                             <TextField
                                 label="Your Comment"
+                                value={newComment}
                                 variant="outlined"
                                 fullWidth
                                 margin="dense"
@@ -88,12 +126,21 @@ function Dorm() {
                                     maxWidth: '300px',
                                     minWidth: '200px',
                                 }}
+                                onChange={(event) => { setNewComment(event.target.value) }}
                             />
+                            <Button onClick={addComment} size="large" variant="contained" color="primary" sx={{ margin: '14px' }}>
+                                Submit
+                            </Button>
                         </Box>
 
-                        <Button variant="contained" color="primary">
-                            Submit
-                        </Button>
+                        <Box>
+                            {comments.map((comment, key) => {
+                                return <CommentBox key={key}>
+                                    <Typography>{comment.comment}</Typography>
+                                    <label> {comment.user} </label>
+                                </CommentBox>
+                            })}
+                        </Box>
                     </Box>
                 </RightSideContainer>
             </Grid>

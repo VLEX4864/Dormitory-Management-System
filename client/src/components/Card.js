@@ -17,7 +17,7 @@ export default function ActionAreaCard({ data }) {
                 <CardMedia
                     component="img"
                     height="140"
-                    image="/static/images/cards/contemplative-reptile.jpg"
+                    image="https://hatrabbits.com/wp-content/uploads/2017/01/random.jpg"
                     alt="Dormitory photo"
                 />
                 <CardContent>

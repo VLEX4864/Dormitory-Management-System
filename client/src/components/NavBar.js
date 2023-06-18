@@ -13,16 +13,21 @@ import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
+import { useState } from 'react';
+import { AuthContext } from '../helpers/AuthContext';
 
 
 
 
-const pages = [{ link: "/createDorm", title: "Create a dormitory" }, { link: "/", title: "Home" }, { link: "/signUp", title: "SignUp" }, { link: "/logIn", title: "LogIn" }, { link: "/HomePage", title: "HomePage" }];
-const settings = ['Profile', 'Account', 'Logout'];
+
 
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const { authState } = React.useContext(AuthContext);
+
+    const pages = [{ link: "/createDorm", title: "Create a dormitory", displayLink: true }, { link: "/", title: "Home", displayLink: true }, { link: "/signUp", title: "SignUp", displayLink: !authState }, { link: "/logIn", title: "LogIn", displayLink: !authState }];
+    const settings = ['Profile', 'Account', 'Logout'];
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -38,6 +43,9 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+
+
 
     return (
         <AppBar position="fixed">
@@ -91,16 +99,19 @@ function ResponsiveAppBar() {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page, index) => (
-                                <MenuItem key={index} onClick={handleCloseNavMenu}>
-                                    <Link variant="h7" underline="none" component={RouterLink} to={page.link}>
-                                        <Typography sx={{ color: "black" }}>
-                                            {page.title}
-                                        </Typography>
-                                    </Link>
-                                </MenuItem>
+                            {pages.map(({ link, title, displayLink }, index) => {
+                                if (!displayLink) return
 
-                            ))}
+                                return (
+                                    <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                        <Link variant="h7" underline="none" component={RouterLink} to={link}>
+                                            <Typography sx={{ color: "black" }}>
+                                                {title}
+                                            </Typography>
+                                        </Link>
+                                    </MenuItem>
+                                )
+                            })}
                         </Menu>
                     </Box>
                     <Typography
@@ -122,15 +133,19 @@ function ResponsiveAppBar() {
                         DMS
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page, index) => (
-                            <MenuItem key={index} onClick={handleCloseNavMenu}>
-                                <Link variant="h7" underline="none" component={RouterLink} to={page.link}>
-                                    <Typography sx={{ color: "white" }}>
-                                        {page.title}
-                                    </Typography>
-                                </Link>
-                            </MenuItem>
-                        ))}
+                        {pages.map(({ link, title, displayLink }, index) => {
+                            if (!displayLink) return
+
+                            return (
+                                <MenuItem key={index} onClick={handleCloseNavMenu}>
+                                    <Link variant="h7" underline="none" component={RouterLink} to={link}>
+                                        <Typography sx={{ color: "white" }}>
+                                            {title}
+                                        </Typography>
+                                    </Link>
+                                </MenuItem>
+                            )
+                        })}
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>

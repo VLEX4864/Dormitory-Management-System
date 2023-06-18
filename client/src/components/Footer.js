@@ -9,7 +9,10 @@ function Footer() {
                 backgroundColor: '#f5f5f5',
                 padding: '20px',
                 textAlign: 'center',
-                mt: 3
+                mt: 3,
+                position: 'fixed',
+                bottom: 0,
+                width: '100%'
             }}
         >
             <Typography variant="body2" color="textSecondary">
