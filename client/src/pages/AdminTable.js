@@ -16,7 +16,7 @@ import { Typography } from '@mui/material';
 import AccessDenied from "../components/AccessDenied";
 import { AuthContext } from "../helpers/AuthContext";
 
-const users = [
+let users = [
     {
         id: 1,
         username: 'andrei12',
@@ -77,14 +77,21 @@ function AdminTable() {
     const handleFieldChange = (e, field, userId) => {
         const { value } = e.target;
 
+        // console.log(users)
+
         // You can update the user data in your state or database
         // For simplicity, this example only updates the displayed value
-        users.forEach((user) => {
+        const newUsers = users.forEach((user) => {
             if (user.id === userId) {
+                console.log(field)
                 user[field] = value;
             }
         });
+
+        users = newUsers
     };
+
+    console.log({ users })
 
     if (authState.role === 'admin') {
         return (

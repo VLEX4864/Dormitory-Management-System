@@ -25,8 +25,6 @@ function ResponsiveAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const { authState, setAuthState } = React.useContext(AuthContext);
 
-
-
     const pages = [{ link: "/createDorm", title: "Create a dormitory", displayLink: authState.role === 'superadmin' }, { link: "/AdminRegister", title: "Register Admin", displayLink: authState.role === 'superadmin' }, { link: "/", title: "Home", displayLink: true }, { link: "/signUp", title: "SignUp", displayLink: !authState.status }, { link: "/logIn", title: "LogIn", displayLink: !authState.status }, { link: "/editDormitory", title: "Edit dormitory", displayLink: authState.role === 'admin' }, { link: "/AdminTable", title: "Admin Dashboard", displayLink: authState.role === 'admin' }];
     const settings = [{ link: "/", title: "Logout", displayLink: authState.status }];
 
@@ -111,7 +109,7 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pages.map(({ link, title, displayLink }, index) => {
-                                if (!displayLink) return null
+                                if (!displayLink) return null;
 
                                 return (
                                     <MenuItem key={index} onClick={handleCloseNavMenu}>
@@ -145,7 +143,7 @@ function ResponsiveAppBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map(({ link, title, displayLink }, index) => {
-                            if (!displayLink) return null
+                            if (!displayLink) return null;
 
                             return (
                                 <MenuItem key={index} onClick={handleCloseNavMenu}>
@@ -165,38 +163,41 @@ function ResponsiveAppBar() {
                         </Typography>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
                                 <AccountCircleIcon fontSize='large' color='white' />
                             </IconButton>
                         </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map(({ link, title, displayLink }, index) => {
-                                if (!displayLink) return null
 
-                                return (
-                                    <MenuItem key={index} onClick={logout}>
-                                        <Typography textAlign="center">{title}</Typography>
-                                    </MenuItem>
-                                )
-                            })}
+                        {authState.status &&
 
 
-                        </Menu>
+                            <Menu
+                                sx={{ mt: '45px' }}
+                                id="menu-appbar"
+                                anchorEl={anchorElUser}
+                                anchorOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={Boolean(anchorElUser)}
+                                onClose={handleCloseUserMenu}
+                            >
+                                {settings.map(({ link, title, displayLink }, index) => {
+                                    if (!displayLink) return null;
+
+                                    return (
+                                        <MenuItem key={index} onClick={logout}>
+                                            <Typography textAlign="center">{title}</Typography>
+                                        </MenuItem>
+                                    )
+                                })}
+                            </Menu>
+                        }
                     </Box>
                 </Toolbar>
             </Container>
