@@ -6,17 +6,25 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Tries from './components/Tries'
 import ResponsiveAppBar from './components/NavBar';
-import Students from './pages/Students';
+import AdminRegister from './pages/AdminRegister';
 import Footer from './components/Footer';
 import Dorm from './pages/Dorm';
+import EditDormitory from './pages/EditDormitory';
 import { AuthContext } from "./helpers/AuthContext";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import AdminTable from './pages/AdminTable';
+import PageNotFound from './pages/PageNotFound';
 
 
 
 function App() {
-  const [authState, setAuthState] = useState(false);
+  const [authState, setAuthState] = useState({
+    username: "",
+    id: 0,
+    status: false,
+    role: "",
+  });
 
   useEffect(() => {
     axios.get('http://localhost:3001/auth/auth', {
@@ -26,12 +34,17 @@ function App() {
     })
       .then((response) => {
         if (response.data.error) {
-          setAuthState(false);
+          setAuthState({ ...authState, status: false });
         } else {
-          setAuthState(true);
+          setAuthState({
+            username: response.data.username,
+            id: response.data.id,
+            status: true,
+            role: response.data.role,
+          });
         }
       });
-  }, []);
+  }, [authState]);
 
   return <div className='App'>
     <AuthContext.Provider value={{ authState, setAuthState }}>
@@ -45,7 +58,10 @@ function App() {
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/dorm/:id" element={<Dorm />} />
           <Route path="/Tries" element={<Tries />} />
-          <Route path="/Students" element={<Students />} />
+          <Route path="/AdminRegister" element={<AdminRegister />} />
+          <Route path="/EditDormitory" element={<EditDormitory />} />
+          <Route path="/AdminTable" element={<AdminTable />} />
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
 
         <Footer />

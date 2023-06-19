@@ -7,6 +7,7 @@ const FormikField = ({ name, label, type = "text" }) => {
         <div className="FormikField">
             <Field
                 as={TextField}
+                rows={2}
                 required
                 autoComplete="off"
                 label={label}

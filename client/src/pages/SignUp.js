@@ -24,6 +24,7 @@ function SignUp() {
 
 
 
+
   const validationSchema = Yup.object().shape({
     username: Yup.string().min(3).max(15).required(),
     password: Yup.string().min(5).max(20).required(),
@@ -129,7 +130,7 @@ function SignUp() {
     <ThemeProvider theme={theme}>
       <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
         <Form>
-          <Box>
+          <Box mt={15} mb={10}>
             <Box sx={{ p: '15px' }}>
               <FormikField name="firstname" label="First name" ></FormikField>
             </Box>
@@ -162,42 +163,6 @@ function SignUp() {
         </Form >
       </Formik >
     </ThemeProvider>
-    // <>
-    //   <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
-    //     <Form>
-    //       <Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikField name="firstname" label="First name" ></FormikField>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikField name="lastname" label="Last name" ></FormikField>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikField name="email" label="Email" ></FormikField>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikField name="username" label="Username" ></FormikField>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikField name="password" label="Password" type="password"></FormikField>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikField name="cnp" label="CNP" ></FormikField>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikSelect name="faculty" items={facultyItems} label="Faculty"></FormikSelect>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikSelect name="degree" items={degreeItems} label="Degree"></FormikSelect>
-    //         </Box>
-    //         <Box sx={{ p: '15px' }}>
-    //           <FormikSelect name="year" items={yearItems} label="Year"></FormikSelect>
-    //         </Box>
-    //         <Button type='submit' variant="contained">Sign Up</Button>
-    //       </Box>
-    //     </Form >
-    //   </Formik >
-    // </>
   )
 }
 

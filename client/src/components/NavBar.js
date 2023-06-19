@@ -7,14 +7,13 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import HomeIcon from '@mui/icons-material/Home';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
-import { useState } from 'react';
 import { AuthContext } from '../helpers/AuthContext';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 
@@ -24,10 +23,12 @@ import { AuthContext } from '../helpers/AuthContext';
 function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
-    const { authState } = React.useContext(AuthContext);
+    const { authState, setAuthState } = React.useContext(AuthContext);
 
-    const pages = [{ link: "/createDorm", title: "Create a dormitory", displayLink: true }, { link: "/", title: "Home", displayLink: true }, { link: "/signUp", title: "SignUp", displayLink: !authState }, { link: "/logIn", title: "LogIn", displayLink: !authState }];
-    const settings = ['Profile', 'Account', 'Logout'];
+
+
+    const pages = [{ link: "/createDorm", title: "Create a dormitory", displayLink: authState.role === 'superadmin' }, { link: "/AdminRegister", title: "Register Admin", displayLink: authState.role === 'superadmin' }, { link: "/", title: "Home", displayLink: true }, { link: "/signUp", title: "SignUp", displayLink: !authState.status }, { link: "/logIn", title: "LogIn", displayLink: !authState.status }, { link: "/editDormitory", title: "Edit dormitory", displayLink: authState.role === 'admin' }, { link: "/AdminTable", title: "Admin Dashboard", displayLink: authState.role === 'admin' }];
+    const settings = [{ link: "/", title: "Logout", displayLink: authState.status }];
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -43,6 +44,16 @@ function ResponsiveAppBar() {
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
     };
+
+    const logout = () => {
+        localStorage.removeItem("accessToken");
+        setAuthState({
+            username: "",
+            id: 0,
+            status: false,
+            role: "",
+        });
+    }
 
 
 
@@ -100,7 +111,7 @@ function ResponsiveAppBar() {
                             }}
                         >
                             {pages.map(({ link, title, displayLink }, index) => {
-                                if (!displayLink) return
+                                if (!displayLink) return null
 
                                 return (
                                     <MenuItem key={index} onClick={handleCloseNavMenu}>
@@ -134,7 +145,7 @@ function ResponsiveAppBar() {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map(({ link, title, displayLink }, index) => {
-                            if (!displayLink) return
+                            if (!displayLink) return null
 
                             return (
                                 <MenuItem key={index} onClick={handleCloseNavMenu}>
@@ -148,10 +159,14 @@ function ResponsiveAppBar() {
                         })}
                     </Box>
 
-                    <Box sx={{ flexGrow: 0 }}>
+                    <Box sx={{ display: 'flex' }} >
+                        <Typography sx={{ marginRight: '20px', paddingTop: '8px' }}>
+                            {authState.username}
+                        </Typography>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" /> */}
+                                <AccountCircleIcon fontSize='large' color='white' />
                             </IconButton>
                         </Tooltip>
                         <Menu
@@ -170,11 +185,17 @@ function ResponsiveAppBar() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography textAlign="center">{setting}</Typography>
-                                </MenuItem>
-                            ))}
+                            {settings.map(({ link, title, displayLink }, index) => {
+                                if (!displayLink) return null
+
+                                return (
+                                    <MenuItem key={index} onClick={logout}>
+                                        <Typography textAlign="center">{title}</Typography>
+                                    </MenuItem>
+                                )
+                            })}
+
+
                         </Menu>
                     </Box>
                 </Toolbar>
