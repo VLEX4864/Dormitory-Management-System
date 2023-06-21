@@ -9,9 +9,9 @@ import AccessDenied from "../components/AccessDenied";
 import { AuthContext } from "../helpers/AuthContext";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
-
-
+import { useNavigate } from "react-router-dom";
+import { styled } from '@mui/system';
+import { Link } from "react-router-dom";
 
 
 const validationSchema = Yup.object({
@@ -30,17 +30,19 @@ const validationSchema = Yup.object({
         .matches(/^[0-9]{10}$/, 'Phone Number must be a 10-digit number'),
 });
 
+const StyledLink = styled(Link)({
+    textDecoration: 'none'
+});
+
 function EditDormitory() {
     let { id } = useParams();
-
     const { authState } = React.useContext(AuthContext);
-
     const [dormObject, setDormObject] = useState({})
+    let navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/dorms/byId/${4}`).then((response) => {
+        axios.get(`http://localhost:3001/dorms/byId/${6}`).then((response) => {
             setDormObject(response.data);
-
         });
     }, [id]);
 
@@ -61,11 +63,10 @@ function EditDormitory() {
         enableReinitialize: true,
         validationSchema,
         onSubmit: (values) => {
-            //Need to implement a PUT request
-            axios.post("http://localhost:3001/dorms", values).then((response) => {
-                // navigate("/");
+            axios.put(`http://localhost:3001/dorms/updateDorm/${6}`, values).then((response) => {
+                navigate("/");
             });
-            console.log(values);
+            // console.log(values);
         },
     });
 
@@ -183,13 +184,24 @@ function EditDormitory() {
                 </Box>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button variant="contained" component="label" size="medium">
-                        Change image
-                        <input type="file" style={{ display: 'none' }} />
-                    </Button>
+
+                    <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" mr={2}>
+                        <TextField
+                            label="Image url"
+                            variant="outlined"
+                            name="url"
+                            value={formik.values.url}
+                            onChange={formik.handleChange}
+                            error={formik.touched.url && Boolean(formik.errors.url)}
+                            helperText={formik.touched.url && formik.errors.url}
+                        />
+                        <Typography variant="body1" color="primary" target="_blank" ml={2} component={StyledLink} underline="none" to={"https://imgbb.com/"}>
+                            Get image url here
+                        </Typography>
+                    </Box>
 
                     <Button type="submit" variant="contained" color="primary">
-                        Update Dormitory
+                        Update dormitory
                     </Button>
                 </Box>
             </Box>

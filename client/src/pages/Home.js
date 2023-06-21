@@ -25,8 +25,7 @@ function Home() {
             <Box
                 sx={{
                     bgcolor: 'background.paper',
-                    pt: 8,
-                    pb: 6,
+                    pt: 13,
                 }}
             >
                 <Container maxWidth="sm">
@@ -45,7 +44,7 @@ function Home() {
                     </Typography>
                 </Container>
             </Box>
-            <Box mt={13} display="flex" justifyContent="center" flexWrap="wrap">
+            <Box mt={10} mb={10} display="flex" justifyContent="center" flexWrap="wrap">
                 {listOfDorms.map((dorm) => (
                     <Box key={dorm.id} flex="0 0 auto" minWidth="300px" maxWidth="400px" margin="10px" onClick={() => navigate(`/dorm/${dorm.id}`)}>
                         <ActionAreaCard data={dorm} />

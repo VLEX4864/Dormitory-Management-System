@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { Grid, Typography, Box, TextField, Button } from '@mui/material';
 import { styled } from '@mui/system';
+import { Link } from "react-router-dom";
 
 
 const LeftSideContainer = styled(Box)(({ theme }) => ({
@@ -30,7 +31,7 @@ const RightSideContainer = styled(Box)({
 
 const ImageContainer = styled(Box)({
     width: '100%',
-    maxWidth: 300,
+    maxWidth: '95%',
     marginBottom: 4
 });
 
@@ -43,6 +44,14 @@ const CommentBox = styled(Box)({
     padding: 10
 })
 
+const TextContainer = styled(Box)({
+    textAlign: 'left',
+});
+
+const StyledLink = styled(Link)({
+    textDecoration: 'none'
+});
+
 
 
 
@@ -52,6 +61,7 @@ function Dorm() {
     const [dormObject, setDormObject] = useState({});
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
+
 
     useEffect(() => {
         axios.get(`http://localhost:3001/dorms/byId/${id}`).then((response) => {
@@ -86,32 +96,71 @@ function Dorm() {
     }
 
     return (
-        <Grid container spacing={2} mt={10}>
+        <Grid container spacing={2} mt={10} mb={10}>
             {/* Left Side */}
             <Grid item xs={12} sm={6} pb={3}>
                 <LeftSideContainer>
-                    <ImageContainer >
+                    <ImageContainer align="center">
                         <img
-                            src="https://i.pinimg.com/originals/f7/ab/d8/f7abd8ab39d92835139687d70b556d58.jpg"
+                            src={dormObject.url}
                             alt="Dorm picturee"
                             style={{ width: '100%', height: 'auto' }}
                         />
                     </ImageContainer>
-                    <Typography variant="h5" align="center" color="primary">
-                        Name: {dormObject.name}
-                    </Typography>
-                    <Typography variant="body1" align="center" color="primary">
-                        Adress: {dormObject.adress}
-                    </Typography>
-                    <Typography variant="body1" align="center" color="primary">
-                        Administrator: {dormObject.administrator}
-                    </Typography>
+                    <TextContainer sx={{ width: '-webkit-fill-available' }}>
+                        <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" bgcolor="#e3f2fd" p={2} m={2}>
+                            <Typography variant="body1" color="primary">
+                                <strong>Name:</strong>
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary" ml={1}>
+                                {dormObject.name}
+                            </Typography>
+                        </Box>
+                        <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" bgcolor="#e3f2fd" p={2} m={2}>
+                            <Typography variant="body1" color="primary">
+                                <strong>Adress:</strong>
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary" ml={1}>
+                                {dormObject.adress}
+                            </Typography>
+                        </Box>
+                        <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" bgcolor="#e3f2fd" p={2} m={2}>
+                            <Typography variant="body1" color="primary">
+                                <strong>Description:</strong>
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary" ml={1}>
+                                {dormObject.description}
+                            </Typography>
+                        </Box>
+                        <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" bgcolor="#e3f2fd" p={2} m={2}>
+                            <Typography variant="body1" color="primary">
+                                <strong>Available rooms:</strong>
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary" ml={1}>
+                                {dormObject.rooms}
+                            </Typography>
+                        </Box>
+                        <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" bgcolor="#e3f2fd" p={2} m={2}>
+                            <Typography variant="body1" color="primary">
+                                <strong>Room capacity:</strong>
+                            </Typography>
+                            <Typography variant="body1" color="textSecondary" ml={1}>
+                                {dormObject.room_capacity}
+                            </Typography>
+                        </Box>
+                        <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" bgcolor="#e3f2fd" p={2} m={2}>
+                            <Typography variant="body1" color="primary" component={StyledLink} target="_blank" underline="none" to={dormObject.maps_link}>
+                                <strong>Location on Maps</strong>
+                            </Typography>
+                        </Box>
+
+                    </TextContainer>
                 </LeftSideContainer>
             </Grid>
 
             <Grid item xs={12} sm={6}>
                 <RightSideContainer>
-                    <Typography variant="h5" align="center" color="primary">
+                    <Typography variant="h4" align="center" color="primary" >
                         Comment Section
                     </Typography>
                     <Box width="80%" mt={2}>
@@ -132,19 +181,22 @@ function Dorm() {
                                 Submit
                             </Button>
                         </Box>
-
                         <Box>
                             {comments.map((comment, key) => {
-                                return <CommentBox key={key}>
-                                    <Typography>{comment.comment}</Typography>
-                                    <label> {comment.user} </label>
+                                return <CommentBox display="flex" sx={{ flexWrap: 'wrap' }} key={key}>
+                                    <Typography variant="body1" color="primary">
+                                        <strong>{comment.user}:</strong>
+                                    </Typography>
+                                    <Typography variant="body1" color="textSecondary" ml={1}>
+                                        {comment.comment}
+                                    </Typography>
                                 </CommentBox>
                             })}
                         </Box>
                     </Box>
                 </RightSideContainer>
             </Grid>
-        </Grid>
+        </Grid >
     );
 }
 

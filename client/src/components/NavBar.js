@@ -14,6 +14,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import { AuthContext } from '../helpers/AuthContext';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -24,6 +25,7 @@ function ResponsiveAppBar() {
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const { authState, setAuthState } = React.useContext(AuthContext);
+    let navigate = useNavigate();
 
     const pages = [{ link: "/createDorm", title: "Create a dormitory", displayLink: authState.role === 'superadmin' }, { link: "/AdminRegister", title: "Register Admin", displayLink: authState.role === 'superadmin' }, { link: "/", title: "Home", displayLink: true }, { link: "/signUp", title: "SignUp", displayLink: !authState.status }, { link: "/logIn", title: "LogIn", displayLink: !authState.status }, { link: "/editDormitory", title: "Edit dormitory", displayLink: authState.role === 'admin' }, { link: "/AdminTable", title: "Admin Dashboard", displayLink: authState.role === 'admin' }];
     const settings = [{ link: "/", title: "Logout", displayLink: authState.status }];
@@ -51,8 +53,14 @@ function ResponsiveAppBar() {
             status: false,
             role: "",
         });
+        navigate("/");
+        //Forcing a refresh of the page so the navbar updates
+        window.location.reload();
     }
 
+    // React.useEffect(() => {
+    //     console.log(authState);
+    // }, [authState.role]);
 
 
 

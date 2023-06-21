@@ -7,6 +7,8 @@ import { AuthContext } from '../../helpers/AuthContext';
 import AccessDenied from '../../components/AccessDenied';
 import TextField from '@mui/material/TextField';
 import { useFormik } from 'formik';
+import { styled } from '@mui/system';
+import { Link } from "react-router-dom";
 
 
 const validationSchema = Yup.object({
@@ -25,7 +27,9 @@ const validationSchema = Yup.object({
         .matches(/^[0-9]{10}$/, 'Phone Number must be a 10-digit number'),
 });
 
-
+const StyledLink = styled(Link)({
+    textDecoration: 'none'
+});
 
 function CreateDorm() {
     const { authState } = React.useContext(AuthContext);
@@ -55,7 +59,7 @@ function CreateDorm() {
     });
 
 
-
+    console.log(authState.role)
 
     if (authState.role === 'superadmin') {
         return (
@@ -75,6 +79,7 @@ function CreateDorm() {
                     marginBottom: 10
                 }}
                 onSubmit={formik.handleSubmit}
+                encType="multipart/form-data"
             >
                 <Typography color="primary" variant="h4" sx={{ textAlign: 'center' }}>
                     Configure Dormitory
@@ -165,10 +170,21 @@ function CreateDorm() {
                 </Box>
 
                 <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <Button variant="contained" component="label" size="medium">
-                        Add image
-                        <input type="file" style={{ display: 'none' }} />
-                    </Button>
+
+                    <Box display="flex" sx={{ flexWrap: 'wrap' }} alignItems="center" mr={2}>
+                        <TextField
+                            label="Image url"
+                            variant="outlined"
+                            name="url"
+                            value={formik.values.url}
+                            onChange={formik.handleChange}
+                            error={formik.touched.url && Boolean(formik.errors.url)}
+                            helperText={formik.touched.url && formik.errors.url}
+                        />
+                        <Typography variant="body1" color="primary" target="_blank" ml={2} component={StyledLink} underline="none" to={"https://imgbb.com/"}>
+                            Get image url here
+                        </Typography>
+                    </Box>
 
                     <Button type="submit" variant="contained" color="primary">
                         Create Dormitory
