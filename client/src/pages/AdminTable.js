@@ -37,6 +37,8 @@ function AdminTable() {
     const [editMode, setEditMode] = useState({});
     const { authState } = React.useContext(AuthContext);
 
+    // console.log(authState);
+
     const handleEditClick = (userId) => {
         setEditMode((prevEditMode) => ({
             ...prevEditMode,
@@ -91,7 +93,6 @@ function AdminTable() {
         users = newUsers
     };
 
-    console.log({ users })
 
     if (authState.role === 'admin') {
         return (

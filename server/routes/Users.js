@@ -7,7 +7,7 @@ const { sign } = require('jsonwebtoken');
 
 
 router.post("/", async (req, res) => {
-    const { username, password, role, firstname, lastname, email, cnp, faculty, programe, degree, year } = req.body;
+    const { username, password, role, firstname, lastname, email, cnp, faculty, programe, degree, year, dormId } = req.body;
     bcrypt.hash(password, 10).then((hash) => {
         Users.create({
             username: username,
@@ -20,7 +20,8 @@ router.post("/", async (req, res) => {
             faculty: faculty,
             programe: programe,
             degree: degree,
-            year: year
+            year: year,
+            dormId: dormId
         });
         res.json("Success")
     });
@@ -39,8 +40,8 @@ router.post("/login", async (req, res) => {
             if (!match) {
                 res.json({ error: "Wrong Username And Password Combination" });
             } else {
-                const accessToken = sign({ username: user.username, id: user.id, role: user.role }, "importantsecret");
-                res.json({ token: accessToken, username: username, id: user.id, role: user.role });
+                const accessToken = sign({ username: user.username, id: user.id, role: user.role, dormId: user.dormId }, "importantsecret");
+                res.json({ token: accessToken, username: username, id: user.id, role: user.role, dormId: user.dormId });
             }
         });
     }

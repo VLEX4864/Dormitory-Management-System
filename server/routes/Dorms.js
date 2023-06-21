@@ -62,6 +62,8 @@ router.put('/updateDorm/:id', async (req, res) => {
 });
 
 
+
+
 router.post("/", async (req, res) => {
     const dorm = req.body;
     await Dorms.create(dorm);

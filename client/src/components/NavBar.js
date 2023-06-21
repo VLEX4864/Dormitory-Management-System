@@ -27,7 +27,7 @@ function ResponsiveAppBar() {
     const { authState, setAuthState } = React.useContext(AuthContext);
     let navigate = useNavigate();
 
-    const pages = [{ link: "/createDorm", title: "Create a dormitory", displayLink: authState.role === 'superadmin' }, { link: "/AdminRegister", title: "Register Admin", displayLink: authState.role === 'superadmin' }, { link: "/", title: "Home", displayLink: true }, { link: "/signUp", title: "SignUp", displayLink: !authState.status }, { link: "/logIn", title: "LogIn", displayLink: !authState.status }, { link: "/editDormitory", title: "Edit dormitory", displayLink: authState.role === 'admin' }, { link: "/AdminTable", title: "Admin Dashboard", displayLink: authState.role === 'admin' }];
+    const pages = [{ link: "/createDorm", title: "Create a dormitory", displayLink: authState.role === 'superadmin' }, { link: "/AdminRegister", title: "Register Admin", displayLink: authState.role === 'superadmin' }, { link: "/signUp", title: "SignUp", displayLink: !authState.status }, { link: "/logIn", title: "LogIn", displayLink: !authState.status }, { link: "/editDormitory", title: "Edit dormitory", displayLink: authState.role === 'admin' }, { link: "/AdminTable", title: "Admin Dashboard", displayLink: authState.role === 'admin' }];
     const settings = [{ link: "/", title: "Logout", displayLink: authState.status }];
 
     const handleOpenNavMenu = (event) => {
@@ -52,15 +52,14 @@ function ResponsiveAppBar() {
             id: 0,
             status: false,
             role: "",
+            dormId: ""
         });
         navigate("/");
         //Forcing a refresh of the page so the navbar updates
         window.location.reload();
     }
 
-    // React.useEffect(() => {
-    //     console.log(authState);
-    // }, [authState.role]);
+
 
 
 

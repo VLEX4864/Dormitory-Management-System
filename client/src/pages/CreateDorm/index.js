@@ -54,12 +54,10 @@ function CreateDorm() {
             axios.post("http://localhost:3001/dorms", values).then((response) => {
                 navigate("/");
             });
-            console.log(values);
         },
     });
 
 
-    console.log(authState.role)
 
     if (authState.role === 'superadmin') {
         return (

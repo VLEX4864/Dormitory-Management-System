@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 import AccessDenied from "../components/AccessDenied";
 import { AuthContext } from "../helpers/AuthContext";
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
 import { styled } from '@mui/system';
 import { Link } from "react-router-dom";
@@ -35,17 +34,23 @@ const StyledLink = styled(Link)({
 });
 
 function EditDormitory() {
-    let { id } = useParams();
     const { authState } = React.useContext(AuthContext);
     const [dormObject, setDormObject] = useState({})
     let navigate = useNavigate();
 
-    useEffect(() => {
-        axios.get(`http://localhost:3001/dorms/byId/${6}`).then((response) => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/dorms/byId/${authState.dormId}`);
             setDormObject(response.data);
-        });
-    }, [id]);
-
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+    useEffect(() => {
+        if (authState.dormId !== '') {
+            fetchData();
+        }
+    }, []);
 
 
     const formik = useFormik({
@@ -58,12 +63,12 @@ function EditDormitory() {
             room_capacity: dormObject.room_capacity || "",
             maps_link: dormObject.maps_link || "",
             phone: dormObject.phone || "",
-            url: dormObject.urldummy_url || ""
+            url: dormObject.url || ""
         },
         enableReinitialize: true,
         validationSchema,
         onSubmit: (values) => {
-            axios.put(`http://localhost:3001/dorms/updateDorm/${6}`, values).then((response) => {
+            axios.put(`http://localhost:3001/dorms/updateDorm/${authState.dormId}`, values).then((response) => {
                 navigate("/");
             });
             // console.log(values);

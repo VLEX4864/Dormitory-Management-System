@@ -29,7 +29,7 @@ export default function SignIn() {
         alert(response.data.error);
       } else {
         localStorage.setItem("accessToken", response.data.token);
-        setAuthState({ username: response.data.username, id: response.data.id, status: true, role: response.data.role });
+        setAuthState({ username: response.data.username, id: response.data.id, status: true, role: response.data.role, dormId: response.data.dormId });
         navigate("/");
       }
 
@@ -42,7 +42,7 @@ export default function SignIn() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 22,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',

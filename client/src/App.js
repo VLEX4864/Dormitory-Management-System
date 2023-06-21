@@ -24,6 +24,7 @@ function App() {
     id: 0,
     status: false,
     role: "",
+    dormId: ""
   });
 
   useEffect(() => {
@@ -41,6 +42,7 @@ function App() {
             id: response.data.id,
             status: true,
             role: response.data.role,
+            dormId: response.data.dormId
           });
         }
       });
