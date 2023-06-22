@@ -50,7 +50,7 @@ function EditDormitory() {
         if (authState.dormId !== '') {
             fetchData();
         }
-    }, []);
+    }, [authState.dormId]);
 
 
     const formik = useFormik({

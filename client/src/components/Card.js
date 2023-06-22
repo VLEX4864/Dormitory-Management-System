@@ -21,7 +21,7 @@ export default function ActionAreaCard({ data }) {
                     alt="Dormitory photo"
                 />
                 <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
+                    <Typography gutterBottom variant="h5" component="div" color="primary">
                         {data.name}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">

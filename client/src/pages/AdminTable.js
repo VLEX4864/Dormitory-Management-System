@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -7,90 +7,42 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import TextField from '@mui/material/TextField';
-import SaveIcon from '@mui/icons-material/Save';
-import CancelIcon from '@mui/icons-material/Cancel';
 import { Typography } from '@mui/material';
 import AccessDenied from "../components/AccessDenied";
 import { AuthContext } from "../helpers/AuthContext";
-
-let users = [
-    {
-        id: 1,
-        username: 'andrei12',
-        firstname: 'Andrei',
-        lastname: 'Flore',
-        email: 'andrei.flore@e-uvt.ro',
-        cnp: '1234567890',
-        faculty: 'FMI',
-        degree: 'BSc',
-        year: '2',
-    },
+import axios from 'axios';
 
 
-    // Add more user objects as needed
-];
 
 function AdminTable() {
-    const [editMode, setEditMode] = useState({});
     const { authState } = React.useContext(AuthContext);
+    const [dormObject, setDormObject] = useState([])
 
-    // console.log(authState);
-
-    const handleEditClick = (userId) => {
-        setEditMode((prevEditMode) => ({
-            ...prevEditMode,
-            [userId]: true,
-        }));
-    };
-
-    const handleCancelClick = (userId) => {
-        setEditMode((prevEditMode) => ({
-            ...prevEditMode,
-            [userId]: false,
-        }));
-    };
-
-    const handleSaveClick = (userId) => {
-        setEditMode((prevEditMode) => ({
-            ...prevEditMode,
-            [userId]: false,
-        }));
-
-        // Perform save operation or update the user data in your state or database
-    };
-
-    const renderField = (user, field, userId) => {
-        if (editMode[userId]) {
-            return (
-                <TextField
-                    value={user[field]}
-                    onChange={(e) => handleFieldChange(e, field, userId)}
-                    fullWidth
-                />
-            );
-        } else {
-            return user[field];
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`http://localhost:3001/auth/getusers/${authState.dormId}`);
+            setDormObject(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
         }
     };
+    useEffect(() => {
+        if (authState.dormId !== '') {
+            fetchData();
+            // console.log(authState)
+        }
+    }, [authState.dormId]);
 
-    const handleFieldChange = (e, field, userId) => {
-        const { value } = e.target;
 
-        // console.log(users)
-
-        // You can update the user data in your state or database
-        // For simplicity, this example only updates the displayed value
-        const newUsers = users.forEach((user) => {
-            if (user.id === userId) {
-                console.log(field)
-                user[field] = value;
-            }
-        });
-
-        users = newUsers
+    const handleDelete = async (userId) => {
+        try {
+            const response = await axios.delete(`http://localhost:3001/auth/deleteuser/${userId}`);
+            console.log(response.data);
+            window.location.reload();
+        } catch (error) {
+            console.error(error);
+        }
     };
 
 
@@ -111,39 +63,22 @@ function AdminTable() {
                             <TableCell>Faculty</TableCell>
                             <TableCell>Degree</TableCell>
                             <TableCell>Year</TableCell>
-                            <TableCell>Edit</TableCell>
                             <TableCell>Delete</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map((user) => (
+                        {dormObject.map((user) => (
                             <TableRow key={user.id}>
-                                <TableCell>{renderField(user, 'firstname', user.id)}</TableCell>
-                                <TableCell>{renderField(user, 'lastname', user.id)}</TableCell>
-                                <TableCell>{renderField(user, 'username', user.id)}</TableCell>
-                                <TableCell>{renderField(user, 'email', user.id)}</TableCell>
-                                <TableCell>{renderField(user, 'cnp', user.id)}</TableCell>
-                                <TableCell>{renderField(user, 'faculty', user.id)}</TableCell>
-                                <TableCell>{renderField(user, 'degree', user.id)}</TableCell>
-                                <TableCell>{renderField(user, 'year', user.id)}</TableCell>
+                                <TableCell>{user.firstname}</TableCell>
+                                <TableCell>{user.lastname}</TableCell>
+                                <TableCell>{user.username}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.cnp}</TableCell>
+                                <TableCell>{user.faculty}</TableCell>
+                                <TableCell>{user.degree}</TableCell>
+                                <TableCell>{user.year}</TableCell>
                                 <TableCell>
-                                    {editMode[user.id] ? (
-                                        <>
-                                            <IconButton onClick={() => handleSaveClick(user.id)}>
-                                                <SaveIcon />
-                                            </IconButton>
-                                            <IconButton onClick={() => handleCancelClick(user.id)}>
-                                                <CancelIcon />
-                                            </IconButton>
-                                        </>
-                                    ) : (
-                                        <IconButton onClick={() => handleEditClick(user.id)}>
-                                            <EditIcon />
-                                        </IconButton>
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    <IconButton>
+                                    <IconButton onClick={() => handleDelete(user.id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </TableCell>
@@ -152,6 +87,7 @@ function AdminTable() {
                     </TableBody>
                 </Table>
             </TableContainer>
+
         );
     } else {
         return (

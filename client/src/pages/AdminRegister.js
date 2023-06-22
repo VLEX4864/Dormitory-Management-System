@@ -48,7 +48,7 @@ function AdminRegister() {
         validationSchema,
         onSubmit: (values) => {
             axios.post("http://localhost:3001/auth", values).then((response) => {
-                console.log(values);
+                alert("Administrator account created!")
             });
         },
     });

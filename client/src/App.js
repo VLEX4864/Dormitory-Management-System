@@ -4,7 +4,6 @@ import Home from './pages/Home';
 import CreateDorm from './pages/CreateDorm';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import Tries from './components/Tries'
 import ResponsiveAppBar from './components/NavBar';
 import AdminRegister from './pages/AdminRegister';
 import Footer from './components/Footer';
@@ -59,7 +58,6 @@ function App() {
           <Route path="/logIn" element={<SignIn />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/dorm/:id" element={<Dorm />} />
-          <Route path="/Tries" element={<Tries />} />
           <Route path="/AdminRegister" element={<AdminRegister />} />
           <Route path="/EditDormitory" element={<EditDormitory />} />
           <Route path="/AdminTable" element={<AdminTable />} />

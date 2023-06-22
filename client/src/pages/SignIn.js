@@ -10,6 +10,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from '../helpers/AuthContext';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
 
 
 const theme = createTheme();
@@ -48,9 +50,9 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: 'primary' }}>
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h4" color="primary">
             Sign in
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -80,6 +82,11 @@ export default function SignIn() {
                 setPassword(event.target.value);
               }}
             />
+            <Grid item>
+              <Link href="/signUp" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
             <Button
               type="submit"
               fullWidth

@@ -49,6 +49,28 @@ router.post("/login", async (req, res) => {
 
 });
 
+router.delete('/deleteuser/:userID', async (req, res) => {
+    const userID = req.params.userID;
+    try {
+        const user = await Users.findByPk(userID);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        await user.destroy();
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+router.get('/getusers/:dormId', async (req, res) => {
+    const dormId = req.params.dormId;
+    const users = await Users.findAll({ where: { DormId: dormId, role: "user" } });
+    res.json(users);
+});
+
 router.get('/auth', validateToken, (req, res) => {
     res.json(req.user);
 });

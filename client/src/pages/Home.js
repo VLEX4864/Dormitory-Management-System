@@ -29,19 +29,19 @@ function Home() {
                     pt: 13,
                 }}
             >
-                <Container maxWidth="sm">
+                <Container maxWidth="md">
                     <Typography
                         component="h1"
                         variant="h2"
                         align="center"
-                        color="text.primary"
+                        color="primary"
                         gutterBottom
                     >
                         Student Residences
                     </Typography>
                     <Typography variant="h5" align="center" color="text.secondary" paragraph>
                         If you are in search for a great student accomodation, you have arrived at the perfect place! Choose
-                        the dorm you like, see details about it and write your feedback
+                        the dorm you like, see details about it and write your feedback in the comments.
                     </Typography>
                 </Container>
             </Box>

@@ -85,19 +85,17 @@ function Dorm() {
         )
             .then((response) => {
                 if (response.data.error) {
-                    console.log(response.data.error);
+                    alert(response.data.error);
                 } else {
                     const comm = { comment: newComment, user: response.data.user };
                     setComments([...comments, comm]);
                     setNewComment("");
                 }
-
             });
     }
 
     return (
         <Grid container spacing={2} mt={10} mb={10}>
-            {/* Left Side */}
             <Grid item xs={12} sm={6} pb={3}>
                 <LeftSideContainer>
                     <ImageContainer align="center">
